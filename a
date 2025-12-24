@@ -1,0 +1,41 @@
+import csv
+from datetime import datetime
+from typing import List, Dict
+
+class MoneyTable:
+    def __init__(self):
+        self.transactions: List[Dict] = []
+    
+    def add_transaction(self, date: str, description: str, amount: float, category: str):
+        """Add a transaction to the table"""
+        self.transactions.append({
+            'date': date,
+            'description': description,
+            'amount': amount,
+            'category': category
+        })
+    
+    def get_balance(self) -> float:
+        """Calculate total balance"""
+        return sum(t['amount'] for t in self.transactions)
+    
+    def get_by_category(self, category: str) -> float:
+        """Get total for a specific category"""
+        return sum(t['amount'] for t in self.transactions if t['category'] == category)
+    
+    def display(self):
+        """Display all transactions"""
+        print(f"{'Date':<12} {'Description':<20} {'Amount':>10} {'Category':<15}")
+        print("-" * 60)
+        for t in self.transactions:
+            print(f"{t['date']:<12} {t['description']:<20} ${t['amount']:>9.2f} {t['category']:<15}")
+        print("-" * 60)
+        print(f"{'Total Balance:':<32} ${self.get_balance():>9.2f}")
+
+# Example usage
+if __name__ == "__main__":
+    table = MoneyTable()
+    table.add_transaction("2024-01-01", "Salary", 3000, "Income")
+    table.add_transaction("2024-01-05", "Groceries", -50, "Food")
+    table.add_transaction("2024-01-10", "Gas", -40, "Transport")
+    table.display()
